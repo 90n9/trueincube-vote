@@ -25,7 +25,7 @@ router.get('/:id', function(req, res, next){
   });
 });
 router.post('/', function (req, res, next) {
-  var user = new user_model(
+  const user = new user_model(
     req.body
   );
   user.save(function (err, data) {
@@ -34,6 +34,36 @@ router.post('/', function (req, res, next) {
     } else {
       res.send({ code: 0, data: data });
     }
+  });
+});
+router.put('/:id', function (req, res, next) {
+
+  user_model.findById(req.params.id, function(err, user) {
+    if (err){
+      next(err);
+    }
+    user.firstname = req.body.firstname;
+    user.lastname = req.body.lastname;
+    user.email = req.body.email;
+    user.password = req.body.password;
+
+    // save the bear
+    user.save(function(err) {
+      if (err){
+        next(err);
+      }
+      res.send({ code: 0, data: user });
+    });
+  });
+});
+router.delete('/:id', function (req, res, next) {
+  user_model.remove({
+    _id: req.params.id
+  }, function(err, bear) {
+    if (err){
+      next(err);
+    }
+    res.json({code: 0, message: 'Successfully deleted' });
   });
 });
 
