@@ -47,7 +47,6 @@ router.put('/:id', function (req, res, next) {
     user.email = req.body.email;
     user.password = req.body.password;
 
-    // save the bear
     user.save(function(err) {
       if (err){
         next(err);
