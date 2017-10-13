@@ -12,8 +12,17 @@ var vote = require('./routes/vote');
 var mongoose = require('mongoose');
 var app = express();
 
+var mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true, promiseLibrary: global.Promise });
 
-mongoose.connect(process.env.MONGODB_URI);
+var allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+}
+app.use(allowCrossDomain);
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

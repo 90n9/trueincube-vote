@@ -1,27 +1,39 @@
 var express = require('express');
 var router = express.Router();
+var user_model = require('../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send([{
-    _id:001,
-    username:"90n9",
-    firstname:"Narathip",
-    lastname:"Harijiratiwong",
-    email:"tholop@gmail.com",
-    password:"xxxxxx",
-    create_date:"2017-10-13 20:07",
-  }]);
+  user_model.find({}).
+  exec(function (err, data) {
+    if (err) {
+      next(err);
+    } else {
+      res.send({ code: 0, data: data });
+    }
+  });
 });
+
 router.get('/:id', function(req, res, next){
-  res.send({
-    _id:001,
-    username:"90n9",
-    firstname:"Narathip",
-    lastname:"Harijiratiwong",
-    email:"tholop@gmail.com",
-    password:"xxxxxx",
-    create_date:"2017-10-13 20:07",
+  user_model.findOne({ _id: req.params.id }).
+  exec( function (err, data) {
+    if (err) {
+      next(err);
+    } else {
+      res.send({ code: 0, data: data });
+    }
+  });
+});
+router.post('/', function (req, res, next) {
+  var user = new user_model(
+    req.body
+  );
+  user.save(function (err, data) {
+    if (err) {
+      next(err)
+    } else {
+      res.send({ code: 0, data: data });
+    }
   });
 });
 
