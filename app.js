@@ -9,8 +9,11 @@ var index = require('./routes/index');
 var user = require('./routes/user');
 var project = require('./routes/project');
 var vote = require('./routes/vote');
-
+var mongoose = require('mongoose');
 var app = express();
+
+
+mongoose.connect(process.env.MONGODB_URI);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
