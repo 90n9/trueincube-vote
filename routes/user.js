@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var user_model = require('../models/user');
+var userModel = require('../models/user-model');
 
 router.get('/', function(req, res, next) {
-  user_model.find({}).
+  userModel.find({}).
   exec(function (err, data) {
     if (err) {
       next(err);
@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next){
-  user_model.findOne({ _id: req.params.id }).
+  userModel.findOne({ _id: req.params.id }).
   exec( function (err, data) {
     if (err) {
       next(err);
@@ -25,7 +25,7 @@ router.get('/:id', function(req, res, next){
 });
 
 router.post('/', function (req, res, next) {
-  const user = new user_model(
+  const user = new userModel(
     req.body
   );
   user.save(function (err, data) {
@@ -38,7 +38,7 @@ router.post('/', function (req, res, next) {
 });
 
 router.put('/:id', function (req, res, next) {
-  user_model.findById(req.params.id, function(err, user) {
+  userModel.findById(req.params.id, function(err, user) {
     if (err){
       next(err);
     }
@@ -57,7 +57,7 @@ router.put('/:id', function (req, res, next) {
 });
 
 router.delete('/:id', function (req, res, next) {
-  user_model.remove({
+  userModel.remove({
     _id: req.params.id
   }, function(err, bear) {
     if (err){

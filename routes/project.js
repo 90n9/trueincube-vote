@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var project_model = require('../models/project');
+var projectModel = require('../models/project-model');
 
 router.get('/', function(req, res, next) {
-  project_model.find({}).
+  projectModel.find({}).
   populate('user').
   exec(function (err, data) {
     if (err) {
@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/user/:user_id', function(req, res, next) {
-  project_model.find({ user: req.params.user_id }).
+  projectModel.find({ user: req.params.user_id }).
   populate('user').
   exec( function (err, data) {
     if (err) {
@@ -27,7 +27,7 @@ router.get('/user/:user_id', function(req, res, next) {
 });
 
 router.get('/:project_id', function(req, res, next) {
-  project_model.findOne({ _id: req.params.project_id }).
+  projectModel.findOne({ _id: req.params.project_id }).
   populate('user').
   exec( function (err, data) {
     if (err) {
@@ -39,7 +39,7 @@ router.get('/:project_id', function(req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-  const project = new project_model(
+  const project = new projectModel(
     req.body
   );
   project.save(function (err, data) {
@@ -52,7 +52,7 @@ router.post('/', function (req, res, next) {
 });
 
 router.put('/:id', function (req, res, next) {
-  project_model.findById(req.params.id, function(err, project) {
+  projectModel.findById(req.params.id, function(err, project) {
     if (err){
       next(err);
     }
@@ -71,7 +71,7 @@ router.put('/:id', function (req, res, next) {
 });
 
 router.delete('/:id', function (req, res, next) {
-  project_model.remove({
+  projectModel.remove({
     _id: req.params.id
   }, function(err, bear) {
     if (err){
