@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var projectSchema = mongoose.Schema({
-  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   project_name: { type: String , required: true},
   status: { type: Boolean, default: true },
   closed_date: Date,

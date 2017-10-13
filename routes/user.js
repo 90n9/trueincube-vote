@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var user_model = require('../models/user');
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
   user_model.find({}).
   exec(function (err, data) {
@@ -24,6 +23,7 @@ router.get('/:id', function(req, res, next){
     }
   });
 });
+
 router.post('/', function (req, res, next) {
   const user = new user_model(
     req.body
@@ -36,8 +36,8 @@ router.post('/', function (req, res, next) {
     }
   });
 });
-router.put('/:id', function (req, res, next) {
 
+router.put('/:id', function (req, res, next) {
   user_model.findById(req.params.id, function(err, user) {
     if (err){
       next(err);
@@ -56,6 +56,7 @@ router.put('/:id', function (req, res, next) {
     });
   });
 });
+
 router.delete('/:id', function (req, res, next) {
   user_model.remove({
     _id: req.params.id
