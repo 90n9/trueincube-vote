@@ -5,11 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var jwt = require('jsonwebtoken');
-var passport = require("passport");
-var passportJWT = require("passport-jwt");
-
-var jwtOptions = require("./configs/jwt-options");
+var auth = require("./auth.js")();
 
 var index = require('./routes/index');
 var login = require('./routes/login');
@@ -19,34 +15,7 @@ var vote = require('./routes/vote');
 
 mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true, promiseLibrary: global.Promise });
 
-//var ExtractJwt = passportJWT.ExtractJwt;
-var JwtStrategy = passportJWT.Strategy;
-//var jwtOptions = {}
-//jwtOptions.jwtFromRequest = ExtractJwt.versionOneCompatibility({authScheme: 'Bearer'});
-//jwtOptions.secretOrKey = 'tasmanianDevil';
-var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
-  console.log('payload received', jwt_payload);
-  // usually this would be a database call:
-  var user = {
-    id: 1,
-    name: 'jonathanmh',
-    password: '%2yx4'
-  };//users[_.findIndex(users, {id: jwt_payload.id})];
-  var user = false;
-  if (user) {
-    console.log('user', user);
-    next(null, user);
-  } else {
-    console.log('not found user', user);
-    next(null, false);
-  }
-});
-passport.use(strategy);
-
 var app = express();
-
-app.use(passport.initialize());
-
 var allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -67,11 +36,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//init jwt authen
+app.use(auth.initialize());
+
 app.use('/', index);
 app.use('/login', login);
-app.use('/user', passport.authenticate('jwt', { session: false }), user);
-app.use('/project', passport.authenticate('jwt', { session: false }), project);
-app.use('/vote', passport.authenticate('jwt', { session: false }), vote);
+app.use('/user', user);
+app.use('/project', auth.authenticate(), project);
+app.use('/vote', auth.authenticate(), vote);
 
 
 // catch 404 and forward to error handler
