@@ -1,4 +1,8 @@
-!! run api on
+# True Incube Vote App Server
+
+This is a final project for class True Incube App.
+
+## run api on
 
 https://trueincube-vote.herokuapp.com/
 
