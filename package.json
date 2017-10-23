@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "set MONGODB_URI=mongodb://localhost/trueincubevote&&nodemon ./bin/www"
+    "test": "nodemon ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.17.1",

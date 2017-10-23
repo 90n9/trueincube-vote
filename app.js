@@ -5,15 +5,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var auth = require("./auth.js")();
 
-var index = require('./routes/index');
-var login = require('./routes/login');
-var user = require('./routes/user');
-var project = require('./routes/project');
-var vote = require('./routes/vote');
+var config = require('./config/config');
+var auth = require("./auth")();
 
-mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true, promiseLibrary: global.Promise });
+var index = require('./routes/index-route');
+var userLogin = require('./routes/userlogin-route');
+var user = require('./routes/user-route');
+var project = require('./routes/project-route');
+var vote = require('./routes/vote-route');
+
+mongoose.connect(config.mongoUri, { useMongoClient: true, promiseLibrary: global.Promise });
 
 var app = express();
 var allowCrossDomain = function(req, res, next) {
@@ -40,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(auth.initialize());
 
 app.use('/', index);
-app.use('/login', login);
+app.use('/userlogin', userLogin);
 app.use('/user', user);
 app.use('/project', auth.authenticate(), project);
 app.use('/vote', auth.authenticate(), vote);
