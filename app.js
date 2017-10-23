@@ -44,7 +44,7 @@ app.use(auth.initialize());
 app.use('/', index);
 app.use('/userlogin', userLogin);
 app.use('/user', user);
-app.use('/project', auth.authenticate(), project);
+app.use('/project', project);
 app.use('/vote', auth.authenticate(), vote);
 
 
