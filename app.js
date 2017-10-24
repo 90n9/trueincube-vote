@@ -14,6 +14,7 @@ var userLogin = require('./routes/userlogin-route');
 var user = require('./routes/user-route');
 var project = require('./routes/project-route');
 var vote = require('./routes/vote-route');
+var report = require('./routes/report');
 
 mongoose.connect(config.mongoUri, { useMongoClient: true, promiseLibrary: global.Promise });
 
@@ -45,6 +46,7 @@ app.use('/', index);
 app.use('/userlogin', userLogin);
 app.use('/user', user);
 app.use('/project', project);
+app.use('/report', report);
 app.use('/vote', auth.authenticate(), vote);
 
 
