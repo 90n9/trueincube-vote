@@ -25,7 +25,7 @@ controller.login = function(req, res, next){
 controller.getList = function(req, res, next){
   userModel
   .find({})
-  .select({_id: 0, password:0})
+  .select({password:0})
   .exec(function (err, data) {
     if (err) {
       next(err);
